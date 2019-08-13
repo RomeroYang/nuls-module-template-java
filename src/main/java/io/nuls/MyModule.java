@@ -2,17 +2,18 @@ package io.nuls;
 
 import io.nuls.core.core.annotation.Autowired;
 import io.nuls.core.core.annotation.Component;
+import io.nuls.core.rpc.model.ModuleE;
 import io.nuls.core.rpc.modulebootstrap.Module;
 import io.nuls.core.rpc.modulebootstrap.RpcModuleState;
 import io.nuls.rpctools.TransactionTools;
 
-/**
- * @Author: zhoulijun
- * @Time: 2019-06-10 20:54
- * @Description: 模块业务实现类
- */
+import java.io.File;
+
 @Component
 public class MyModule {
+
+    @Autowired
+    Config config;
 
     @Autowired
     TransactionTools transactionTools;
@@ -24,8 +25,13 @@ public class MyModule {
      * @return
      */
     public RpcModuleState startModule(String moduleName){
+        //初始化数据存储文件夹
+        File file = new File(config.getDataPath());
+        if(!file.exists()){
+            file.mkdir();
+        }
         //注册交易
-        //transactionTools.registerTx(moduleName,200);
+        transactionTools.registerTx(moduleName, Constant.TX_TYPE_RECORD);
         return RpcModuleState.Running;
     }
 
@@ -35,9 +41,9 @@ public class MyModule {
      */
     public Module[] declareDependent() {
         return new Module[]{
-//                Module.build(ModuleE.LG),
-//                Module.build(ModuleE.TX),
-//                Module.build(ModuleE.NW)
+                Module.build(ModuleE.LG),
+                Module.build(ModuleE.TX),
+                Module.build(ModuleE.NW)
         };
     }
 

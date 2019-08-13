@@ -6,9 +6,9 @@ init(){
     os=`uname`
     if [ "$os" == "Darwin" ];
     then
-        eval "sed -i '' 's/nuls-module-template-java/$2/' $1"
+        eval "sed -i '' 's/nuls-record/$2/' $1"
     else
-        eval "sed -i 's/nuls-module-template-java/$2/' $1"
+        eval "sed -i 's/nuls-record/$2/' $1"
     fi
 }
 

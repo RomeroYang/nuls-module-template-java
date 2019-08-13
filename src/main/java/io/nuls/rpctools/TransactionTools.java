@@ -1,7 +1,9 @@
 package io.nuls.rpctools;
 
+import io.nuls.Config;
 import io.nuls.base.RPCUtil;
 import io.nuls.base.data.Transaction;
+import io.nuls.core.core.annotation.Autowired;
 import io.nuls.core.core.annotation.Component;
 import io.nuls.core.exception.NulsException;
 import io.nuls.core.log.Log;
@@ -21,13 +23,16 @@ import java.util.function.Function;
 @Component
 public class TransactionTools implements CallRpc {
 
+    @Autowired
+    Config config;
+
 
     /**
      * 发起新交易
      */
-    public Boolean newTx(int chainId,Transaction tx) throws NulsException, IOException {
+    public Boolean newTx(Transaction tx) throws NulsException, IOException {
         Map<String, Object> params = new HashMap<>(2);
-        params.put("chainId", chainId);
+        params.put("chainId", config.getChainId());
         params.put("tx", RPCUtil.encode(tx.serialize()));
         return callRpc(ModuleE.TX.abbr, "tx_newTx", params, res -> true);
     }
@@ -36,7 +41,7 @@ public class TransactionTools implements CallRpc {
      * 向交易模块注册交易
      * Register transactions with the transaction module
      */
-    public boolean registerTx(int chainId,String moduleName,int... txTyps) {
+    public boolean registerTx(String moduleName,int... txTyps) {
         try {
             List<TxRegisterDetail> txRegisterDetailList = new ArrayList<>();
             Arrays.stream(txTyps).forEach(txType->{
@@ -51,7 +56,7 @@ public class TransactionTools implements CallRpc {
             //向交易管理模块注册交易
             Map<String, Object> params = new HashMap<>();
             params.put(Constants.VERSION_KEY_STR, "1.0");
-            params.put(Constants.CHAIN_ID, chainId);
+            params.put(Constants.CHAIN_ID, config.getChainId());
             params.put("moduleCode", moduleName);
             params.put("list", txRegisterDetailList);
             params.put("delList",List.of());
