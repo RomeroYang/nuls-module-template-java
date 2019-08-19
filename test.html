@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Record Service</title>
+    <style>
+        label {
+            min-width: 200px;
+            display:inline-block;
+            text-align: right;
+            vertical-align: top;
+        }
+        input,textarea {
+            width: 540px;
+        }
+        textarea {
+            height: 100px;
+        }
+        .row {
+            padding: 10px 0px;
+
+        }
+        .row-btn {
+            padding-left: 646px;
+        }
+        button {
+            height: 30px;
+            width: 100px;
+            border-radius: 3px;
+            background-color: darkturquoise;
+            color: #fff;
+            font-size: 16px;
+            margin-right: 0px;
+        }
+        .left {
+            vertical-align: top;
+            padding: 10px;
+            list-style-type: none;
+            display: inline-block;
+            width: 20%;
+        }
+        .left > li {
+            margin: 5px;
+            cursor: pointer;
+        }
+        .right {
+            display: inline-block;
+            padding: 10px;
+            width: 70%;
+            border-left: 1px solid #ddd;
+        }
+        .right > div {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="left">
+        <li data-v="create"><a>Create Record</a></li>
+        <li data-v="view">Query Record</li>
+    </div>
+    <div class="right">
+        <div id="create">
+            <!--<h1>创建存证</h1>-->
+            <div class="row"><label for="md5">Record MD5：</label><input id="md5" type="text" size="100"  /></div>
+            <div class="row"><label for="name">Record Name：</label><input id="name" type="text" size="100"  /></div>
+            <div class="row"><label for="record-number">Record Number：</label><input id="record-number" type="text" size="100"  /></div>
+            <div class="row"><label for="author">Author：</label><input id="author" type="text" size="100"  /></div>
+            <div class="row"><label for="address">Sender Address：</label><input id="address" type="text" size="100"  /></div>
+            <div class="row"><label>Password: </label><input id="password" type="password"  ><br></div>
+            <div class="row row-btn"><button id="createRecord" >Submit:</button></div>
+            <label id="res"></label>
+        </div>
+        <div id="view">
+            <!--<h1>查看存证内容</h1>-->
+            <div class="row"><label>Record MD5：</label><input id="hash" type="text" size="100"  /></div>
+            <div class="row row-btn"><button id="viewRecord" >View</button><br></div>
+            <div class="row"><span id="detail"></span></div>
+        </div>
+    </div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+
+    function formatJson(msg) {
+        var rep = "~";
+        var jsonStr = JSON.stringify(msg, null, rep)
+        var str = "";
+        for (var i = 0; i < jsonStr.length; i++) {
+            var text2 = jsonStr.charAt(i)
+            if (i > 1) {
+                var text = jsonStr.charAt(i - 1)
+                if (rep != text && rep == text2) {
+                    str += "<br/>"
+                }
+            }
+            str += text2;
+        }
+        jsonStr = "";
+        for (var i = 0; i < str.length; i++) {
+            var text = str.charAt(i);
+            if (rep == text)
+                jsonStr += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            else {
+                jsonStr += text;
+            }
+            if (i == str.length - 2)
+                jsonStr += "<br/>"
+        }
+        return jsonStr;
+    }
+
+    $(function () {
+        $("#create").show();
+        $("#createRecord").click(function(){
+            var md5 = $("#md5").val();
+            var name = $("#name").val();
+            var record_number = $("#record-number").val();
+            var author = $("#author").val();
+            var address = $("#address").val();
+            var password = $("#password").val();
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:9999/record",
+                data: JSON.stringify({
+                    "md5" : md5,
+                    "name" : name,
+                    "recordNumber" : record_number,
+                    "author" : author,
+                    "address" : address,
+                    "password" : password
+                }),
+                success: function(data){
+                    console.log(data)
+                    if(data.success){
+                        $("#res").text(data.data);
+                    }else{
+                        $("#res").text(data.msg)
+                    }
+                },
+                contentType: 'application/json',
+                dataType: "json"
+            });
+        });
+        $("#viewMail").click(function(){
+            var hash = $("#hash").val();
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:9999/record/detail/" + hash,
+                success: function(data){
+                    console.log(data)
+                    if(data.success){
+                        $("#detail").html(formatJson(data.data));
+                    }else{
+                        $("#detail").text(data.msg)
+                    }
+                }
+            });
+        });
+
+        $(".left > li").click(function(){
+            $(".right > div").hide();
+            $("#" + $(this).data("v")).show();
+        })
+
+    });
+</script>
+</body>
+</html>

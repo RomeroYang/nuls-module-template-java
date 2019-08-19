@@ -93,6 +93,7 @@ public class RecordController implements BaseController {
         Record r = new Record();
         r.setAddress(AddressTool.getAddress(account.getAddress()));
         r.setMd5(req.getMd5());
+        r.setName(req.getName());
         r.setRecordNumber(req.getRecordNumber());
         r.setAuthor(req.getAuthor());
         tx.setTxData(r.serialize());

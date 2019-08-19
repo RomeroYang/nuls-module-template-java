@@ -6,6 +6,8 @@ public class RecordData {
 
     private String md5;
 
+    private String name;
+
     public String recordTime;
 
     public String recordNumber;
@@ -26,6 +28,14 @@ public class RecordData {
 
     public void setMd5(String md5) {
         this.md5 = md5;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getRecordTime() {

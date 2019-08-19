@@ -8,6 +8,8 @@ public class CreateRecordReq {
 
     public String md5;
 
+    public String name;
+
     public String recordNumber;
 
     public String author;
@@ -34,6 +36,14 @@ public class CreateRecordReq {
 
     public void setMd5(String md5) {
         this.md5 = md5;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getRecordNumber() {

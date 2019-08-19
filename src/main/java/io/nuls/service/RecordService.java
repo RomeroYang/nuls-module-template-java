@@ -75,9 +75,10 @@ public class RecordService {
             RecordData record = new RecordData();
             record.setAddress(data[0]);
             record.setMd5(data[1]);
-            record.setRecordTime(data[2]);
-            record.setRecordNumber(data[3]);
-            record.setAddress(data[4]);
+            record.setName(data[2]);
+            record.setRecordTime(data[3]);
+            record.setRecordNumber(data[4]);
+            record.setAddress(data[5]);
             res.add(record);
             line = reader.readLine();
         }
@@ -100,6 +101,7 @@ public class RecordService {
             String item = new StringBuilder()
                     .append(d.getAddress()).append(SPLIT)
                     .append(d.getMd5()).append(SPLIT)
+                    .append(d.getName()).append(SPLIT)
                     .append(d.getRecordTime()).append(SPLIT)
                     .append(d.getRecordNumber()).append(SPLIT)
                     .append(d.getAuthor()).append(SPLIT).toString();

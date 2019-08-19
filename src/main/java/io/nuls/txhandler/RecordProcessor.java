@@ -101,6 +101,7 @@ public class RecordProcessor implements TransactionProcessor {
             record.parse(new NulsByteBuffer(tx.getTxData()));
             recordData.setAddress(AddressTool.getStringAddressByBytes(record.getAddress()));
             recordData.setMd5(record.getMd5());
+            recordData.setName(record.getName());
             recordData.setRecordTime(String.valueOf(tx.getTime()));
             recordData.setRecordNumber(record.getRecordNumber());
             recordData.setAuthor(record.getAuthor());
