@@ -16,8 +16,6 @@ public class Record extends BaseNulsData {
 
     public String name;
 
-    public String recordTime;
-
     public String recordNumber;
 
     public String author;
@@ -47,14 +45,6 @@ public class Record extends BaseNulsData {
         this.name = name;
     }
 
-    public String getRecordTime() {
-        return recordTime;
-    }
-
-    public void setRecordTime(String recordTime) {
-        this.recordTime = recordTime;
-    }
-
     public String getRecordNumber() {
         return recordNumber;
     }
@@ -76,7 +66,6 @@ public class Record extends BaseNulsData {
         stream.writeBytesWithLength(address);
         stream.writeString(md5);
         stream.writeString(name);
-        stream.writeString(recordTime);
         stream.writeString(recordNumber);
         stream.writeString(author);
     }
@@ -86,7 +75,6 @@ public class Record extends BaseNulsData {
         address = byteBuffer.readByLengthByte();
         md5 = byteBuffer.readString();
         name = byteBuffer.readString();
-        recordTime = byteBuffer.readString();
         recordNumber = byteBuffer.readString();
         author = byteBuffer.readString();
     }
@@ -97,7 +85,6 @@ public class Record extends BaseNulsData {
         s += SerializeUtils.sizeOfBytes(address);
         s += SerializeUtils.sizeOfString(md5);
         s += SerializeUtils.sizeOfString(name);
-        s += SerializeUtils.sizeOfString(recordTime);
         s += SerializeUtils.sizeOfString(recordNumber);
         s += SerializeUtils.sizeOfString(author);
         return s;

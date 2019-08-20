@@ -35,7 +35,6 @@ public class RecordService {
             } catch (IOException e) {
                 Log.error("save record file fail",e);
             }
-
         }
     }
 
@@ -78,7 +77,7 @@ public class RecordService {
             record.setName(data[2]);
             record.setRecordTime(data[3]);
             record.setRecordNumber(data[4]);
-            record.setAddress(data[5]);
+            record.setAuthor(data[5]);
             res.add(record);
             line = reader.readLine();
         }
