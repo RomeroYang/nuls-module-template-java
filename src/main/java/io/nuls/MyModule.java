@@ -1,5 +1,6 @@
 package io.nuls;
 
+import io.nuls.controller.core.WebServerManager;
 import io.nuls.core.core.annotation.Autowired;
 import io.nuls.core.core.annotation.Component;
 import io.nuls.core.rpc.model.ModuleE;
@@ -32,6 +33,8 @@ public class MyModule {
         }
         //注册交易
         transactionTools.registerTx(moduleName, Constant.TX_TYPE_RECORD);
+        //初始化web server
+        WebServerManager.getInstance().startServer("0.0.0.0", 9999);
         return RpcModuleState.Running;
     }
 
